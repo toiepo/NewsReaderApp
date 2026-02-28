@@ -22,7 +22,7 @@ fun NewsItem(
         .fillMaxWidth()
         .clickable { onClick() }
         .padding(16.dp)) {
-        Text(text = news.title, style = MaterialTheme.typography.titleMedium)
+        Text(text = news.title, style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.primary)
         Spacer(modifier = Modifier.height(4.dp))
         Text(text = news.description)
     }

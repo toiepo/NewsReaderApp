@@ -29,7 +29,7 @@ fun NewsDetailScreen(news: NewsUiModel, onBack: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(rememberScrollState()) // Quan trọng: Để cuộn được nội dung dài
+            .verticalScroll(rememberScrollState())
     ) {
         BackHandler {
             onBack()
@@ -49,7 +49,8 @@ fun NewsDetailScreen(news: NewsUiModel, onBack: () -> Unit) {
             Text(
                 text = news.title,
                 style = MaterialTheme.typography.headlineSmall,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.primary
             )
 
             Spacer(modifier = Modifier.height(8.dp))
