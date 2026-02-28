@@ -1,0 +1,49 @@
+@startuml
+title Offline-First News Reader App - Architecture
+
+skinparam shadowing false
+skinparam line type or tho
+skinparam componentStyle rectangle
+skinparam defaultFontSize 14
+
+top to bottom direction
+
+' ================= COLORS =================
+skinparam rectangle {
+  BorderColor #333333
+}
+
+' ================= LEFT COLUMN =================
+rectangle "Hilt\nDependency Injection" as HILT #6AA84F
+
+' ================= CENTER COLUMN (MAIN FLOW) =================
+rectangle "UI (Compose / XML Screens)\n\n• NewsListScreen\n• NewsDetailScreen" as UI #6AA84F
+
+rectangle "ViewModel (viewModelScope)\n\n• StateFlow<UIState>\n• loadNews()\n\n[suspend / launch]" as VM #3D85C6
+
+rectangle "Repository (Single Source of Truth)\n\n• getNews(): Flow<List<News>>\n• refreshNews()\n• Coroutine orchestration" as REPO #F6A623
+
+rectangle "Local DB (Room)\n\n• NewsDao\n• Flow<List<News>>" as LOCAL #6FA8DC
+
+' ================= RIGHT COLUMN =================
+rectangle "WorkManager (CoroutineWorker)\n\n• Periodic Sync\n• Retry + Backoff\n• Network Constraint" as WORK #B7B7B7
+
+rectangle "Remote API (Retrofit)\n\n• NewsService\n• suspend fun getNews()" as REMOTE #6AA84F
+
+' ================= MAIN FLOW =================
+UI -down-> VM : collectAsState()
+VM -down-> REPO : send
+
+REPO -down-> LOCAL
+REPO -down-> REMOTE : save to
+
+WORK -right-> REMOTE
+LOCAL -right-> WORK : Refresh
+
+' ================= HILT DI =================
+HILT -> VM
+HILT -> REPO
+HILT .. LOCAL
+
+
+@enduml
