@@ -7,8 +7,11 @@ import com.example.newsreaderapp.ui_app.interfaces.NewsRepository
 import com.example.newsreaderapp.ui_app.model.NewsUiModel
 import com.example.newsreaderapp.ui_app.state.NewsUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -22,6 +25,8 @@ class NewsViewModel @Inject constructor(
 
     private val _uiState = MutableStateFlow(NewsUiState(isLoading = true))
     val uiState: StateFlow<NewsUiState> = _uiState.asStateFlow()
+    private val _navigationEvent = MutableSharedFlow<Unit>()
+    val navigationEvent: SharedFlow<Unit> = _navigationEvent.asSharedFlow()
 
     private val _isRefreshing = MutableStateFlow(false)
     val isRefreshing = _isRefreshing.asStateFlow()
@@ -43,6 +48,9 @@ class NewsViewModel @Inject constructor(
 
             NewsUiEvent.OnBackClick -> {
                 _selectedNews.value = null
+                viewModelScope.launch {
+                    _navigationEvent.emit(Unit)
+                }
             }
 
             NewsUiEvent.Refresh -> {

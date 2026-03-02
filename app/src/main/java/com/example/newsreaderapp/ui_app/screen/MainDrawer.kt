@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.HorizontalDivider
@@ -25,7 +26,8 @@ fun MainDrawer(
     drawerState: DrawerState,
     onHomeClick: () -> Unit,
     onSettingsClick: () -> Unit,
-    content: @Composable () -> Unit, // This is the main screen content
+    onAboutClick: () -> Unit,
+    content: @Composable () -> Unit,
 ) {
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -52,6 +54,14 @@ fun MainDrawer(
                     selected = false,
                     onClick = onSettingsClick,
                     icon = { Icon(Icons.Default.Settings, contentDescription = null) },
+                    modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
+                )
+
+                NavigationDrawerItem(
+                    label = { Text(text = "About") },
+                    selected = false,
+                    onClick = onAboutClick,
+                    icon = {Icon(Icons.Default.Info, contentDescription = null)},
                     modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
                 )
             }

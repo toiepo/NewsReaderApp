@@ -1,6 +1,5 @@
 package com.example.newsreaderapp.ui_app
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
@@ -22,9 +21,11 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.newsreaderapp.ui_app.screen.AboutScreen
 import com.example.newsreaderapp.ui_app.screen.MainDrawer
 import com.example.newsreaderapp.ui_app.screen.NewsRoute
 import com.example.newsreaderapp.ui_app.screen.Screen
+import com.example.newsreaderapp.ui_app.screen.SettingsScreen
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -55,6 +56,12 @@ fun NewsApp() {
                         drawerState.close()
                         navController.navigate(Screen.Settings.route)
                     }
+                },
+                onAboutClick = {
+                    scope.launch {
+                        drawerState.close()
+                        navController.navigate(Screen.About.route)
+                    }
                 }
             ) {
                 Scaffold(
@@ -83,6 +90,10 @@ fun NewsApp() {
                         composable(Screen.Settings.route) {
                             SettingsScreen()
                         }
+
+                        composable(Screen.About.route) {
+                            AboutScreen(navController)
+                        }
                     }
                 }
             }
@@ -90,9 +101,3 @@ fun NewsApp() {
     }
 }
 
-@Composable
-fun SettingsScreen() {
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = androidx.compose.ui.Alignment.Center) {
-        Text("Settings Screen", style = MaterialTheme.typography.headlineMedium)
-    }
-}
